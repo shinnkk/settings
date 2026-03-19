@@ -32,4 +32,5 @@
     "jupyter.askForKernelRestart": false,
     "notebook.lineNumbers": "on",
     "update.showReleaseNotes": false,
+    "inlineChat.affordance": "off"
 }
