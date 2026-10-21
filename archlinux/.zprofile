@@ -1,0 +1,1 @@
+exec niri-session -l
