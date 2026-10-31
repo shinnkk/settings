@@ -61,7 +61,8 @@ class ValidateConfigs:
 
             if matched:
                 status = 0
-                id_link = self.disk_name
+                if "/dev/disk/by-id" in self.disk_name:
+                    id_link = self.disk_name
 
             line = (
                 f"{'>' if matched else ' ':<2}"
