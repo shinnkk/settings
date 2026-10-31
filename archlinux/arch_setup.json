@@ -1,0 +1,106 @@
+{
+    "disk": "/dev/sda",
+    "luksPasswordFile": "./secrets/luks_password.key",
+    "hostName": "arch",
+    "keyboardLayout": "jp106",
+    "timeZone": "Asia/Tokyo",
+    "userName": "testuser",
+    "userPasswordFile": "./secrets/user_password.key",
+    "packages": {
+        "system": [
+            "base",
+            "base-devel",
+            "linux",
+            "linux-firmware",
+            "intel-ucode",
+            "amd-ucode",
+            "sudo",
+            "efibootmgr",
+            "mkinitcpio",
+            "cryptsetup",
+            "systemd-ukify",
+            "sbctl",
+            "tpm2-tss",
+            "tpm2-tools"
+        ],
+        "network": [
+            "networkmanager",
+            "nftables",
+            "bluez",
+            "bluez-utils"
+        ],
+        "desktop": [
+            "hyprland",
+            "noctalia",
+            "uwsm",
+            "xdg-desktop-portal-hyprland",
+            "xdg-desktop-portal-gtk",
+            "wl-clipboard",
+            "brightnessctl",
+            "ddcutil",
+            "upower",
+            "hyprpolkitagent"
+        ],
+        "audio": [
+            "pipewire",
+            "pipewire-audio",
+            "pipewire-pulse",
+            "pipewire-alsa",
+            "pipewire-jack",
+            "wireplumber"
+        ],
+        "textEnvironment": [
+            "fcitx5",
+            "fcitx5-configtool",
+            "fcitx5-gtk",
+            "fcitx5-qt",
+            "noto-fonts",
+            "noto-fonts-cjk",
+            "noto-fonts-emoji",
+            "noto-fonts-extra",
+            "fontconfig"
+        ],
+        "shell": [
+            "zsh",
+            "zsh-autocomplete",
+            "zsh-completions",
+            "zsh-syntax-highlighting"
+        ],
+        "applications": [
+            "git",
+            "go",
+            "neovim",
+            "alacritty",
+            "tailscale",
+            "firefox",
+            "nautilus",
+            "xdg-user-dirs",
+            "xdg-utils",
+            "gvfs",
+            "gvfs-mtp",
+            "opencloud-desktop",
+            "oo7"
+        ],
+        "utilities": [
+            "tuned",
+            "tuned-ppd",
+            "cups",
+            "cups-pdf",
+            "unarchiver",
+            "pacman-contrib",
+            "fwupd"
+        ]
+    },
+    "aurPackages": [
+        "brave-bin",
+        "ttf-udev-gothic",
+        "fcitx5-hazkey-bin",
+        "hazkey-zenzai-model",
+        "visual-studio-code-bin"
+    ],
+    "zshConfigFile": {
+        "zshrc": "./configs/zshrc",
+        "zprofile": "./configs/zprofile"
+    },
+    "fontConfigFile": "./configs/fonts.conf"
+}

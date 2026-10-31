@@ -32,6 +32,8 @@ packages=(
     "tpm2-tss"
     "tpm2-tools"
     "neovim"
+    "uwsm"
+    "libnewt"
     "git"
     "go"
     "nftables"
