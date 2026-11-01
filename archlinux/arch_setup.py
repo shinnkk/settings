@@ -15,69 +15,56 @@ class ValidateConfigs:
         self.disk_name = disk_name
 
     def _check_disk(self):
-        status = 1
-
         result = subprocess.check_output(
-            ["lsblk", "-Jdpo", "NAME,ID-LINK,SIZE,TYPE"],
+            ["lsblk", "-Jdpo", "MODEL,NAME,TRAN,SIZE,ID-LINK,TYPE"],
             text=True,
         )
 
-        devices = json.loads(result)["blockdevices"]
-
         disks = [
-            [
-                device["name"],
-                f"/dev/disk/by-id/{device['id-link']}" if device.get("id-link") else "",
-                device.get("size") or ""
-            ]
-            for device in devices
-            if device["type"] == "disk"
+            {
+                "Model": d.get("model") or "",
+                "Path": d.get("name") or "",
+                "Transport": d.get("tran") or "",
+                "Size": d.get("size") or "",
+                "ID": f"/dev/disk/by-id/{d['id-link']}" if d.get("id-link") else "",
+            }
+            for d in json.loads(result)["blockdevices"]
+            if d.get("type") == "disk"
         ]
 
-        row_name = ["NAME", "ID-LINK", "SIZE"]
+        if disks:
+            raise RuntimeError('No disks found')
 
-        width_name = max(
-            len(row_name[0]),
-            *(len(name) for name, _, _ in disks),
-        ) + 4
+        columns = ("Model", "Path", "Transport", "Size", "ID")
 
-        width_id_link = max(
-            len(row_name[1]),
-            len(self.disk_name),
-            *(len(id_link) for _, id_link, _ in disks),
-        ) + 4
+        widths = {
+            col: max(len(col), *(len(d[col]) for d in disks))
+            for col in columns[:-1]
+        }
 
-        target = os.path.realpath(self.disk_name)
+        def format_row(row):
+            return "  ".join(
+                f"{row[col]:<{widths[col]}}"
+                for col in columns[:-1]
+            ) + "  " + row["ID"]
 
-        print(
-            f"{' ':<2}"
-            f"{row_name[0]:<{width_name}}"
-            f"{row_name[1]:<{width_id_link}}"
-            f"{row_name[2]}"
-        )
+        found = False
 
-        for name, id_link, size in disks:
-            matched = os.path.realpath(name) == target
+        print("Disk")
+        print("  " + format_row({col: col for col in columns}))
 
-            if matched:
-                status = 0
-                if "/dev/disk/by-id" in self.disk_name:
-                    id_link = self.disk_name
+        for disk in disks:
+            matched = os.path.realpath(disk["Path"]) == os.path.realpath(self.disk_name)
+            found |= matched
 
-            line = (
-                f"{'>' if matched else ' ':<2}"
-                f"{name:<{width_name}}"
-                f"{id_link:<{width_id_link}}"
-                f"{size}"
-            )
+            if matched and self.disk_name.startswith("/dev/disk/by-id/"):
+                disk["ID"] = self.disk_name
 
-            if matched:
-                print(f"\33[36m{line}\033[0m")
-            else:
-                print(line)
+            line = ("> " if matched else "  ") + format_row(disk)
+            print(f"\33[36m{line}\033[0m" if matched else line)
 
-        return status
+        if not found:
+            raise ValueError('An invalid value in “disk”')
 
     def __call__(self):
-        if self._check_disk():
-            raise ValueError('An invalid value in “disk”')
+        self._check_disk()
