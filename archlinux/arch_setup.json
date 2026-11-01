@@ -1,11 +1,9 @@
 {
-    "disk": "/dev/sda",
-    "luksPasswordFile": "./secrets/luks_password.key",
-    "hostName": "arch",
-    "keyboardLayout": "jp106",
+    "diskName": "/dev/sda",
     "timeZone": "Asia/Tokyo",
+    "keyboardLayout": "jp106",
+    "hostName": "arch",
     "userName": "testuser",
-    "userPasswordFile": "./secrets/user_password.key",
     "packages": {
         "system": [
             "base",
@@ -98,6 +96,8 @@
         "hazkey-zenzai-model",
         "visual-studio-code-bin"
     ],
+    "luksPasswordFile": "./secrets/luks_password.key",
+    "userPasswordFile": "./secrets/user_password.key",
     "zshConfigFile": {
         "zshrc": "./configs/zshrc",
         "zprofile": "./configs/zprofile"
