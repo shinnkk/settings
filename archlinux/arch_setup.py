@@ -1,6 +1,7 @@
 import json
 import os
 import subprocess
+from pathlib import Path
 
 # 設定値が問題ないか確認
 class ValidateConfigs:
@@ -35,7 +36,7 @@ class ValidateConfigs:
             if d.get("type") == "disk"
         ]
 
-        if disks:
+        if not disks:
             raise RuntimeError('No disks found')
 
         columns = ("Model", "Path", "Transport", "Size", "ID")
@@ -53,7 +54,7 @@ class ValidateConfigs:
 
         found = False
 
-        print("Disk")
+        print("Disk:")
         print("  " + format_row({col: col for col in columns}))
 
         for disk in disks:
@@ -67,17 +68,38 @@ class ValidateConfigs:
             print(f"\33[36m{line}\033[0m" if matched else line)
 
         if not found:
-            raise ValueError('An invalid value in “disk”')
+            raise ValueError('Invalid config: “diskName”')
 
     def _check_time_zone(self):
-        pass
+        base = Path("/usr/share/zoneinfo")
+        file = Path(base / self.time_zone)
+
+        if not file.is_file():
+            raise ValueError('Invalid config: “timeZone”')
+
+        print(f"Timezone:  {self.time_zone}")
 
     def _check_keyboard_layout(self):
-        pass
+        base = Path("/usr/share/kbd/keymaps/i386/qwerty")
+        file = Path(base / self.keyboard_layout)
+
+        if not file.is_file():
+            raise ValueError('Invalid config: "keyboardLayout”')
+
+        print(f"Keyboard layout:  {self.keyboard_layout}")
+
     def _check_host_name(self):
-        pass
+        if not len(self.host_name):
+            raise ValueError('Invalid config: "hostName"')
+
+        print(f"Hostname:  {self.host_name}")
+
     def _check_user_name(self):
-        pass
+        if not len(self.user_name):
+            raise ValueError('Invalid config: "userName"')
+
+        print(f"Username:  {self.user_name}")
+
     def _check_packages(self):
         pass
     def _check_aur_packages(self):
@@ -93,6 +115,16 @@ class ValidateConfigs:
 
     def __call__(self):
         self._check_disk_name()
+        self._check_time_zone()
+        self._check_keyboard_layout()
+        self._check_host_name()
+        self._check_user_name()
+        self._check_packages()
+        self._check_aur_packages()
+        self._check_luks_password_file()
+        self._check_user_password_file()
+        self._check_zsh_config_file()
+        self._check_font_config_file()
 
 
 if __name__ == "__main__":
@@ -100,3 +132,5 @@ if __name__ == "__main__":
 
     with open(json_file, "r", encoding="utf-8") as f:
         configs = json.load(f)
+
+    ValidateConfigs(configs)()

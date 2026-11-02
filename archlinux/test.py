@@ -1,2 +1,2 @@
-if 1:
+if not 0:
     print("OK")

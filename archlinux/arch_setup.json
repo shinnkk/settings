@@ -1,8 +1,8 @@
 {
     "diskName": "/dev/sda",
     "timeZone": "Asia/Tokyo",
-    "keyboardLayout": "jp106",
-    "hostName": "arch",
+    "keyboardLayout": "jp106.map.gz",
+    "hostName": "archlinux",
     "userName": "testuser",
     "packages": {
         "system": [
