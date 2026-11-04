@@ -71,13 +71,22 @@
             "alacritty",
             "tailscale",
             "firefox",
+        ],
+        "fileManager": [
             "nautilus",
             "xdg-user-dirs",
             "xdg-utils",
             "gvfs",
             "gvfs-mtp",
             "opencloud-desktop",
-            "oo7"
+            "oo7",
+        ],
+        "virtualMachine": [
+            "qemu-desktop",
+            "virt-manager",
+            "libvirt",
+            "dnsmasq",
+            "edk2-ovmf"
         ],
         "utilities": [
             "tuned",
