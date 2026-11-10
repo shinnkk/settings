@@ -89,7 +89,7 @@
             "edk2-ovmf"
         ],
         "utilities": [
-            "apparmor"
+            "apparmor",
             "tuned",
             "tuned-ppd",
             "cups",
