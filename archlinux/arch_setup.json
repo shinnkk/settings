@@ -71,6 +71,7 @@
             "alacritty",
             "tailscale",
             "firefox",
+            "freerdp"
         ],
         "fileManager": [
             "nautilus",
